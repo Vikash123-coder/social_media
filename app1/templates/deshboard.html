@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="py-5 text-center bg-secondary text-white"> 
+        <a href="{% url 'posts:post' %}">
+            <button type="button" class="btn btn-primary">Add Post</button> 
+        </a>
+    </div>
+</div>
+<div class="container pt-5">
+    <div class="col-md-6 mx-auto">
+        <div id="autocomplete" class="autocomplete">
+            <input class="autocomplete-input" />
+            <ul class="autocomplete-result-list"></ul>
+        </div>
+    </div>
+</div>
+
+       
+{% if messages %}
+  {% for message in messages %}
+      <small>{% if message_tags %} class={{message_tags}}{% endif %}
+         <p class="message">{{message}}</p>
+      </small>
+  {% endfor %}
+{% endif %} 
+
+{% endblock content %}
+
+{% block scripts %}
+<script>
+    new Autocomplete('#autocomplete', {
+        search : input => {
+            console.log(input)
+            const url = `posts/get-names/?search=${input}`
+            return new Promise(resolve => {
+                fetch(url)
+                .then(response => response.json())
+                .then(data =>{
+                    console.log(data.payload)
+                    resolve(data.payload)
+                })
+            })
+        },
+        renderResult : (result, propes) => {
+            console.log(props)
+            let group = ''
+            if (result.index % 2 == 0){
+                group  = `<li class="group">Group</li>`
+            }
+            return `
+            ${group}
+            <li ${props}>
+                <div class="wiki-title">
+                    ${result.username}
+                    </div>
+                    </li>
+            `        
+        }
+    })
+</script>    
+
+{% endblock scripts %}

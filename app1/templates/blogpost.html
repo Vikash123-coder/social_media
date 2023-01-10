@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container">
+  <div class="py-5 text-center bg-secondary text-white">
+    <h1 class="mb-3">Welcome</h1>
+  
+    <form action="" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <table>
+          {{form.as_p}}
+      </table>
+      <p> <botton>
+          <label for="save" class="submit"></label>
+          <input type="submit" class="btn btn-primary" value="Save" id="save"></p>
+      </botton>
+          
+    </form>
+  </div>
+  </div>
+{% endblock %} 

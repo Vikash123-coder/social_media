@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block title %}
+ profile detail
+{% endblock title %}
+
+{% block content %}
+<!--model-->
+<div class="ui basic modal">
+    <div class="ui icon header">
+      <i class="user plus icon"></i>
+      Are you sure you want to follow {{object}} ?
+    </div>
+    <div class="content">
+      <p>By clicking yes you will see all the posts published by {{object}}</p>
+    </div>
+    <div class="actions">
+      <form action="{% url 'profiles:follow_unfollow_view' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="profile_pk" value={{object.pk}}> 
+        <button type="submit" class="ui green ok massive button">
+            <i class="checkmark icon"></i>
+            Yes
+        </button>
+      </form>  
+    </div>
+</div>
+
+<div class="ui grid">
+    <div class="row">
+        <div class="four wide column">
+            <div class="ui violet segment">
+                 {{object}}
+            </div>
+        <hr>           
+        {% if follow %}
+          <form action="{% url 'profiles:follow_unfollow_view' %}" method="post">
+            {% csrf_token %}
+              <input type="hidden" name="profile_pk" value={{object.pk}}>
+              <button type="submit" class="ui negative button">unfollow</button>
+          </form>
+        {% else %}
+           <button id="follow-btn" class="ui positive button">follow</button>  
+        {% endif %}
+        </div>
+          <div class="two wide column">
+              <div class="ui blue segment">
+                  <h4 class="ui header">Total Posts</h4>
+              </div>
+              <div class="col-md-2 mx-auto">
+                <p>{{object.profiles_posts|length}}</p>
+              </div>
+          </div> 
+        <div class="twelve wide column">
+          <hr>
+          {% for post in object.profiles_posts %}
+            <div class="ui teal segment">
+              <div class="ui card">
+                <div class="image">
+                     <img src="{{post.image.url}}" alt="">
+                </div>
+                <div class="content">
+                    <a class="header">{{post.name}}</a>
+                <div class="meta">
+                    <span class="date">{{post.created}}</span>
+                </div>
+                <div class="description">
+                     {{post.caption}}
+                </div>
+          </div>
+
+            </div>
+          {% endfor %}  
+        </div>
+    </div>    
+
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function(){
+        $('#follow-btn').click(function(){
+            $('.ui.basic.modal')
+            .modal('show')
+        })
+    ;      
+    })    
+</script>
+{% endblock scripts %}

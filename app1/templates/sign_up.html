@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+  <form action="" method="POST" novalidate>
+      {% csrf_token %}
+      {% for fm in form %}
+        {{fm.label_tag}} {{fm}} {{fm.errors|striptags}}<br>
+      {% endfor %}  
+      <input type="submit" value="Submit"> 
+  </form>
+  {% if messages %}
+    {% for message in messages %}
+       <small>{% if message_tags %} class={{message_tags}}{% endif %}
+        <p class="message">{{message}}</p>
+       </small>
+    {% endfor %}
+  {% endif %}      
+ 
+
+{% endblock%}

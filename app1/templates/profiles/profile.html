@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}
+ profile to follow
+{% endblock title %}
+
+{% block content %}
+     {% csrf_token %}
+     <div class="ui grid">
+          <div class="row">
+             <div class="two wide column">
+                         <div class="ui green segment">
+                              <img class="ui avatar image" src="{{image.url}}" alt="">
+                    <span>{{name}}</span>
+                         </div>
+             </div>  
+              <div class="four wide column">
+                    {% for profile in profiles %}
+                    <div class="ui olive segment">
+                         {{profile}}
+                         <br>
+                         <a href="{% url 'profiles:profile-detail-view' profile.pk %}">
+                              <button class="ui primary button">See Profile</button>
+                         </a>
+                    </div>
+                    {% endfor %}
+               </div>
+              <div class="ten wide column">  
+                 {% for post in posts %}
+                  {% csrf_token %}
+                  <div class="ui teal segment">
+                   <div class="ui card">
+                         <div class="image">
+                              <img src="{{post.image.url}}" alt="">
+                         </div>
+                         <div class="content">
+                             <a class="header">{{post.name}}</a>
+                         <div class="meta">
+                             <span class="date">{{post.created}}</span>
+                         </div>
+                         <div class="description">
+                              {{post.caption}}
+                         </div>
+                   </div>
+                  </div>
+                 {% endfor %}   
+              </div>
+          </div> 
+     </div>             
+     
+{% endblock content %}
